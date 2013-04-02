@@ -21,7 +21,7 @@ VALUEFORMAT = {
     'windchill': "h",
     'rainrate': "H",
     'uvindex': "b",
-    'solarradiation': "h",
+    'solarradiation': "H",
     'stormrain': "H",
     'startdateofcurrentstorm': "H",
     'dailyrain': "H",
