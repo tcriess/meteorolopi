@@ -77,7 +77,7 @@ class ReadLogger:
         data = []
         t = self.sendackcommand(b"LOOP 1", 99)
         if len(t) == 99:
-            fmt = "<cccbBHHhBhBBH7B4B4BB7BHBHHHHHHHHH4B4BBBH8B4BBHBBHHBBH"
+            fmt = "<cccbBHHhBhBBH7B4B4BB7BHbhHHHHHHHH4B4BBBH8B4BBHBBHHBBH"
             data = struct.unpack(fmt, t)
             # print(data)
             data = {
@@ -166,7 +166,7 @@ class ReadLogger:
         data = []
         t = self.sendackcommand(b"LPS 2 1", 99)
         if len(t) == 99:
-            fmt = "<cccbBHHhBhBBHHHHHHHhBBBhhhHBHHHHHHHHBhhhhhBBBBBBBBBBBBHHHHHHBBH"
+            fmt = "<cccbBHHhBhBBHHHHHHHhBBBhhhHbhHHHHHHHBhhhhhBBBBBBBBBBBBHHHHHHBBH"
             data = struct.unpack(fmt, t)
             # print(data)
             data = {
