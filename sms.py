@@ -34,7 +34,7 @@ class SMS:
         parity = 'N'
         rtscts = False
         xonxoff = False
-        timeout = 2
+        timeout = 10
         for i in range(20):
             port = "/dev/ttyUSB{0}".format(i)
             try:
