@@ -4,6 +4,7 @@ import struct
 import time
 import base64
 import requests
+import logging
 
 import settings
 import sms
@@ -16,6 +17,13 @@ LF_MODES = ('LF', 'CR', 'CR/LF')
 
 REPR_MODES = ('raw', 'some control', 'all control', 'hex')
 
+numeric_level = getattr(logging, settings.LOGLEVEL.upper(), None)
+if not isinstance(numeric_level, int):
+    raise ValueError('Invalid log level: %s' % settings.LOGLEVEL)
+logging.basicConfig(filename=settings.LOGFILE, level=numeric_level)
+
+logging.getLogger("meteorolopi").debug("Alive.")
+
 class ReadLogger:
     def __init__(self):
         self.convert_outgoing = CONVERT_LF
@@ -26,7 +34,8 @@ class ReadLogger:
         self.datalock = threading.RLock()
         self.writelock = threading.RLock()
         if not self._autoprobe():
-            raise Exception("No modem found")
+            logging.getLogger("meteorolopi").debug("No logger found")
+            raise Exception("No logger found")
         
     def _autoprobe(self):
         success = False
@@ -363,7 +372,9 @@ def main():
     v2 = r.command_loop2()
     v1.update(v2)
     m = r.preparemessage(v1, False)
+    logging.getLogger("meteorolopi").debug("Read and prepared message")
     s = sms.SMS(settings.SMS_TO_NUMBER, settings.SMS_FROM_NUMBER)
+    logging.getLogger("meteorolopi").debug("About to send message")
     s.send(m)
     # url = settings.SEND_TO_URL
     # params = {"text": m, "from": settings.SMS_FROM_NUMBER}

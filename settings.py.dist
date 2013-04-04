@@ -3,6 +3,9 @@ SMS_FROM_NUMBER = "+49..."
 SMS_COMMAND_FROM_NUMBER = "+49..."
 SEND_TO_URL = "http://.../"
 
+LOGLEVEL = 'DEBUG'
+LOGFILE = '/var/log/meteorolopi'
+
 VALUEFORMAT = {
     'bartrend': "b",
     'barometer': "H",

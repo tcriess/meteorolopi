@@ -1,5 +1,6 @@
 import serial
 import threading
+import logging
 
 from messaging.sms import SmsSubmit, SmsDeliver
 
@@ -24,6 +25,7 @@ class SMS:
         self.datalock = threading.RLock()
         self.writelock = threading.RLock()
         if not self._autoprobe():
+            logging.getLogger("meteorolopi").debug("No modem found")
             raise Exception("No modem found")
         
     def _autoprobe(self):
