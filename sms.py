@@ -40,7 +40,12 @@ class SMS:
             except AttributeError:
                 # happens when the installed pyserial is older than 2.5. use the
                 # Serial class directly then.
-                self.serial = serial.Serial(port, baudrate, parity=parity, rtscts=rtscts, xonxoff=xonxoff, timeout=timeout)
+                try:
+                    self.serial = serial.Serial(port, baudrate, parity=parity, rtscts=rtscts, xonxoff=xonxoff, timeout=timeout)
+                except:
+                    continue
+            except:
+                continue
             d = self._sendcommand(b"ATE0", 10)
             if d == b"ATE0\r\nOK\r\n" or d == b"\r\nOK\r\n":
                 success = True

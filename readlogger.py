@@ -42,7 +42,12 @@ class ReadLogger:
             except AttributeError:
                 # happens when the installed pyserial is older than 2.5. use the
                 # Serial class directly then.
-                self.serial = serial.Serial(port, baudrate, parity=parity, rtscts=rtscts, xonxoff=xonxoff, timeout=timeout)
+                try:
+                    self.serial = serial.Serial(port, baudrate, parity=parity, rtscts=rtscts, xonxoff=xonxoff, timeout=timeout)
+                except:
+                    continue
+            except:
+                continue
             if self.command_test():
                 success = True
                 break
@@ -358,11 +363,11 @@ def main():
     v2 = r.command_loop2()
     v1.update(v2)
     m = r.preparemessage(v1, False)
-    # s = sms.SMS(settings.SMS_TO_NUMBER, settings.SMS_FROM_NUMBER)
-    # s.send(m)
-    url = settings.SEND_TO_URL
-    params = {"text": m, "from": settings.SMS_FROM_NUMBER}
-    requests.get(url, params=params)
+    s = sms.SMS(settings.SMS_TO_NUMBER, settings.SMS_FROM_NUMBER)
+    s.send(m)
+    # url = settings.SEND_TO_URL
+    # params = {"text": m, "from": settings.SMS_FROM_NUMBER}
+    # requests.get(url, params=params)
 
 if __name__ == '__main__':
     main()
