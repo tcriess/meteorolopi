@@ -20,7 +20,8 @@ REPR_MODES = ('raw', 'some control', 'all control', 'hex')
 numeric_level = getattr(logging, settings.LOGLEVEL.upper(), None)
 if not isinstance(numeric_level, int):
     raise ValueError('Invalid log level: %s' % settings.LOGLEVEL)
-logging.basicConfig(filename=settings.LOGFILE, level=numeric_level)
+FORMAT = '%(asctime)-15s %(message)s'
+logging.basicConfig(filename=settings.LOGFILE, level=numeric_level, format=FORMAT)
 
 logging.getLogger("meteorolopi").debug("Alive.")
 
