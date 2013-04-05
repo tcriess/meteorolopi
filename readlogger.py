@@ -376,13 +376,15 @@ def main():
     logging.getLogger("meteorolopi").debug("Read and prepared message")
     
     url = settings.SEND_TO_URL
-    params = {"text": m, "from": settings.SMS_FROM_NUMBER}
-    requests.get(url, params=params)
-    logging.getLogger("meteorolopi").debug("Sent to URL")
+    if url:
+        params = {"text": m, "from": settings.SMS_FROM_NUMBER}
+        requests.get(url, params=params)
+        logging.getLogger("meteorolopi").debug("Sent to URL")
     
-    s = sms.SMS(settings.SMS_TO_NUMBER, settings.SMS_FROM_NUMBER)
-    logging.getLogger("meteorolopi").debug("About to send message (not actually sending, just test)")
-    # s.send(m)
+    if settings.SMS_TO_NUMBER:
+        s = sms.SMS(settings.SMS_TO_NUMBER, settings.SMS_FROM_NUMBER, settings.SMS_COMMAND_FROM_NUMBER)
+        logging.getLogger("meteorolopi").debug("About to send message")
+        s.send(m)
 
 if __name__ == '__main__':
     main()

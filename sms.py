@@ -13,9 +13,10 @@ NEWLINE_CONVERISON_MAP = (b'\n', b'\r', b'\r\n')
 
 class SMS:
     # def __init__(self, number, port, baudrate, parity, rtscts, xonxoff, convert_outgoing=CONVERT_CRLF, repr_mode=0):
-    def __init__(self, tonumber, fromnumber):
+    def __init__(self, tonumber, fromnumber, commandfromnumber):
         self.tonumber = tonumber
         self.fromnumber = fromnumber
+        self.commandfromnumber = commandfromnumber
         convert_outgoing = CONVERT_CR
         self.convert_outgoing = convert_outgoing
         self.newline = NEWLINE_CONVERISON_MAP[self.convert_outgoing]
@@ -136,7 +137,7 @@ class SMS:
                     pdu = d[i]
                     s = SmsDeliver(pdu)
                     msg = s.data
-                    if msg['number'] == settings.SMS_COMMAND_FROM_NUMBER:
+                    if msg['number'] == self.commandfromnumber:
                         # valid command
                         command = msg["text"]
                         print("Command: " + command)
@@ -153,7 +154,7 @@ def main():
     # sms = SMS(settings.SMS_NUMBER, settings.GSM_DEVICE, 9600, 'N', False, False, CONVERT_CR)
     # s = sms.send("Test from stick to phone")
     # print(s)
-    sms = SMS(settings.SMS_TO_NUMBER, settings.SMS_FROM_NUMBER)
+    sms = SMS(settings.SMS_TO_NUMBER, settings.SMS_FROM_NUMBER, settings.SMS_COMMAND_FROM_NUMBER)
     m = sms.check()
     print(m)
     
