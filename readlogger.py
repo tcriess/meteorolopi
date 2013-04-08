@@ -375,16 +375,26 @@ def main():
     m = r.preparemessage(v1, False)
     logging.getLogger("meteorolopi").debug("Read and prepared message")
     
-    url = settings.SEND_TO_URL
-    if url:
-        params = {"text": m, "from": settings.SMS_FROM_NUMBER}
-        requests.get(url, params=params)
-        logging.getLogger("meteorolopi").debug("Sent to URL")
-    
     if settings.SMS_TO_NUMBER:
         s = sms.SMS(settings.SMS_TO_NUMBER, settings.SMS_FROM_NUMBER, settings.SMS_COMMAND_FROM_NUMBER)
         logging.getLogger("meteorolopi").debug("About to send message")
         s.send(m)
+    
+    url = settings.SEND_TO_URL
+    if url:
+        params = {"text": m, "from": settings.SMS_FROM_NUMBER}
+        r = requests.get(url, params=params)
+        logging.getLogger("meteorolopi").debug("Sent to URL, status: ")
+        logging.getLogger("meteorolopi").debug(r.status)
+        i = 0
+        while r.status >= 500 and i < 5:
+            # wait 1 minute, try again (max. 5 minutes) if still unsuccessful, give up
+            time.sleep(60)
+            i += 1
+            r = requests.get(url, params=params)
+            logging.getLogger("meteorolopi").debug("Sent to URL, status: ")
+            logging.getLogger("meteorolopi").debug(r.status)
+            
 
 if __name__ == '__main__':
     main()
