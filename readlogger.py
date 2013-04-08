@@ -385,15 +385,15 @@ def main():
         params = {"text": m, "from": settings.SMS_FROM_NUMBER}
         r = requests.get(url, params=params)
         logging.getLogger("meteorolopi").debug("Sent to URL, status: ")
-        logging.getLogger("meteorolopi").debug(r.status)
+        logging.getLogger("meteorolopi").debug(r.status_code)
         i = 0
-        while r.status >= 500 and i < 5:
+        while r.status_code >= 500 and i < 5:
             # wait 1 minute, try again (max. 5 minutes) if still unsuccessful, give up
             time.sleep(60)
             i += 1
             r = requests.get(url, params=params)
             logging.getLogger("meteorolopi").debug("Sent to URL, status: ")
-            logging.getLogger("meteorolopi").debug(r.status)
+            logging.getLogger("meteorolopi").debug(r.status_code)
             
 
 if __name__ == '__main__':
