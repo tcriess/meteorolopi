@@ -251,9 +251,10 @@ class ReadLogger:
         return data
     
     def preparemessage(self, lp, cleartext=False):
-        fmt = ""
-        cv = ""
-        vs = []
+        # first byte is type of station, here: 0 (currently unused)
+        fmt = "B"
+        cv = "000"
+        vs = [0, ]
         for v in settings.VALUES:
             if not v in lp:
                 lp[v] = 0
