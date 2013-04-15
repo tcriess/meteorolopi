@@ -23,7 +23,7 @@ def preparemessages(logger, types=None, cleartext=False):
     types is a list of message types to be prepared
     Returns a list of messages
     """
-    data = logger.readData(types)
+    data = logger.getData(types)
     values = logger.getValues()
     msgs = []
     for msg in values.VALUES:
