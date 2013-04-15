@@ -26,7 +26,7 @@ def preparemessages(logger, types=None, cleartext=False):
     data = logger.getData(types)
     values = logger.getValues()
     msgs = []
-    for msg in values.VALUES:
+    for msg in values:
         if (type is None) or (msg["type"] in types): 
             fmt = "B"
             cv = "%03d" % msg["type"]
