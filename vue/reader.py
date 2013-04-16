@@ -55,12 +55,6 @@ class Reader:
                 break
         return success
     
-    def getValueformat(self):
-        return values.VALUEFORMAT
-    
-    def getValues(self):
-        return values.VALUES
-    
     def getData(self, types=None):
         data = {}
         if (types is None) or (0 in types):

@@ -12,6 +12,10 @@ readertype = settings.TYPE
 mod = __import__(readertype + '.reader', fromlist=['Reader'])
 Reader = getattr(mod, 'Reader')
 
+mod = __import__(readertype + '.values', fromlist=['VALUEFORMAT', 'VALUES'])
+valueformat = getattr(mod, 'VALUEFORMAT')
+values = getattr(mod, 'VALUES')
+
 numeric_level = getattr(logging, settings.LOGLEVEL.upper(), None)
 if not isinstance(numeric_level, int):
     raise ValueError('Invalid log level: %s' % settings.LOGLEVEL)
@@ -27,8 +31,6 @@ def preparemessages(logger, types=None, cleartext=False):
     Returns a list of messages
     """
     data = logger.getData(types)
-    valueformat = logger.getValueformat()
-    values = logger.getValues()
     msgs = []
     for msg in values:
         if (types is None) or (msg["type"] in types): 
@@ -53,20 +55,23 @@ def preparemessages(logger, types=None, cleartext=False):
     return msgs
 
 def main():
-    logger = Reader()  # @UndefinedVariable
+    logger = Reader()
     types = None
     if len(sys.argv) > 1:
         types = [int(typestr) for typestr in sys.argv[1:]]
     msgs = preparemessages(logger, types)
+    logging.getLogger("meteorolopi").debug("Message(s) prepared")
     for msg in msgs:
         if settings.SMS_TO_NUMBER:
             s = sms.SMS(settings.SMS_TO_NUMBER, settings.SMS_FROM_NUMBER, settings.SMS_COMMAND_FROM_NUMBER)
             logging.getLogger("meteorolopi").debug("About to send message")
             s.send(msg)
+            logging.getLogger("meteorolopi").debug("Message sent")
         url = settings.SEND_TO_URL
         if url:
             params = {"text": msg, "from": settings.SMS_FROM_NUMBER}
             try:
+                logging.getLogger("meteorolopi").debug("About to send message")
                 r = requests.get(url, params=params)
                 logging.getLogger("meteorolopi").debug("Sent to URL, status: ")
                 logging.getLogger("meteorolopi").debug(r.status_code)
@@ -75,6 +80,7 @@ def main():
                     # wait 1 minute, try again (max. 5 minutes) if still unsuccessful, give up
                     time.sleep(60)
                     i += 1
+                    logging.getLogger("meteorolopi").debug("About to send message, next try")
                     r = requests.get(url, params=params)
                     logging.getLogger("meteorolopi").debug("Sent to URL, status: ")
                     logging.getLogger("meteorolopi").debug(r.status_code)
