@@ -68,7 +68,7 @@ LOGFILE - the filename of the log file. Make sure that the current user has writ
 sudo touch /var/log/meteorolopi; sudo chown pi /var/log/meteorolopi
 ```
 
-Note that the device names for the logging device and for the 3G dongle are determined by auto-probing the /dev/ttyUSB? device files. Depending on the reliability of the autoprobing this may change in the future.
+Note that the device names for both the logging device and the 3G dongle are determined by auto-probing the /dev/ttyUSB? device files. Depending on the reliability of the autoprobing this may change in the future.
 
 
 Cron job
@@ -112,6 +112,8 @@ and create 3 files: __init__.py, reader.py and values.py.
 - reader.py should import the values file and implement a class Reader which has at least the method getData, which reads and returns the data from the logger.
 - values.py contains the definition of the supported data.
 
+Each logger can support multiple message types, thus it is possible to handle current data different from accumulated data (or min/max values), which may only be needed once a day.
+
 The format of definition in values.py is:
 ```
 # The format of all possible measurements in python struct format (usually "B"/"b" for unsigned/signed bytes or "H"/"h" for unsigned/signed words)
@@ -128,7 +130,7 @@ VALUES = [ # array of message types that can be sent
             'type': 1,
             # which measurements are included in this message, this also defines the order
             'values': (
-                'mesaurement1',
+                'measurement1',
                 )
         },
         # add other message types here
@@ -137,4 +139,4 @@ VALUES = [ # array of message types that can be sent
 
 Make sure that the message type is unique among all possible loggers! Currently, only message type 0 is reserved for the Davis Vantage VUE LOOP/LOOP2 message.
 
-The implementation of the method getData in the Reader class expects a list of types (or None) and returns a list of dicts holding the data.
+The implementation of the method getData in the Reader class expects a list of types (or None) and returns a dict holding the necessary data for creating the message(s) of the given types.
