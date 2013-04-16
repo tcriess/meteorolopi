@@ -106,9 +106,9 @@ For other weather station logger types, create a new subdirectory just like the 
 ```
 mkdir newlogger
 ```
-and create 3 files: __init__.py, reader.py and values.py.
+and create 3 files: \_\_init\_\_.py, reader.py and values.py.
 
-- __init__.py can be empty.
+- \_\_init\_\_.py can be empty.
 - reader.py should import the values file and implement a class Reader which has at least the method getData, which reads and returns the data from the logger.
 - values.py contains the definition of the supported data.
 
