@@ -9,9 +9,8 @@ import settings
 import sms
 
 readertype = settings.TYPE
-__import__(readertype + '.reader.Reader')
-
-# from vue.readloggervue import ReadLoggerVue
+mod = __import__(readertype + '.reader', fromlist=['Reader'])
+Reader = getattr(mod, 'Reader')
 
 numeric_level = getattr(logging, settings.LOGLEVEL.upper(), None)
 if not isinstance(numeric_level, int):
