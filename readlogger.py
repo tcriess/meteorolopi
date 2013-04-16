@@ -9,7 +9,7 @@ import settings
 import sms
 
 readertype = settings.TYPE
-__import__(readertype + '.reader', fromlist=['Reader'])
+__import__(readertype + '.reader.Reader')
 
 # from vue.readloggervue import ReadLoggerVue
 
