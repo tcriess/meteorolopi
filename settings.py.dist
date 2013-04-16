@@ -1,9 +1,9 @@
-TYPE = '...' # supported: "vue"
+TYPE = 'vue' # supported: 'vue' - "Davis Vantage VUE"
 
 SMS_TO_NUMBER = "+49..."
 SMS_FROM_NUMBER = "+49..."
 SMS_COMMAND_FROM_NUMBER = "+49..."
-SEND_TO_URL = "http://.../"
+SEND_TO_URL = None # or "http://.../"
 
 LOGLEVEL = 'DEBUG'
 LOGFILE = '/var/log/meteorolopi'

@@ -12,7 +12,7 @@ CONVERT_LF = 0
 NEWLINE_CONVERISON_MAP = (b'\n', b'\r', b'\r\n')
 LF_MODES = ('LF', 'CR', 'CR/LF')
 
-class ReadLoggerVue:
+class Reader:
     """
     Class to read data from the Davis Vantage Vue logger
     The class tries to identify the logger by autoprobing /dev/ttyUSB0-20 (sending a TEST command)
@@ -54,6 +54,9 @@ class ReadLoggerVue:
                 success = True
                 break
         return success
+    
+    def getValueformat(self):
+        return values.VALUEFORMAT
     
     def getValues(self):
         return values.VALUES

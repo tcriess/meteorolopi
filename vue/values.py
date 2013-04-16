@@ -1,11 +1,5 @@
-# define which data will be send
-VALUES = [
-        {
-            # type of message (0-255)
-            # 0 - Davis Vantage Vue Loop/Loop2 data
-            'type': 0,
-            # format of individual measurements (signed/unsigned byte/word, see python struct module)
-            'valueformat': {
+# define the format of all possible values (python struct format)
+VALUEFORMAT = {
                 'bartrend': "b",
                 'barometer': "H",
                 'insidetemperature': "h",
@@ -39,7 +33,13 @@ VALUES = [
                 'timeofsunset': "H",
                 'transmitterbatterystatus': "b",
                 'consolebatteryvoltage': "H",
-                },
+                }
+# define which data will be send
+VALUES = [
+        {
+            # type of message (0-255)
+            # 0 - Davis Vantage Vue Loop/Loop2 data
+            'type': 0,
             # which measurements are included in this message, define the order
             'values': (
                 'bartrend',
